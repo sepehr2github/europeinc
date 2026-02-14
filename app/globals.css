@@ -1,0 +1,263 @@
+@import "tailwindcss";
+
+@theme {
+  --color-eu-blue: #003399;
+  --color-eu-blue-dark: #001d5c;
+  --color-eu-blue-light: #0044cc;
+  --color-eu-gold: #ffcc00;
+  --color-eu-gold-dark: #e6b800;
+  --color-eu-gold-muted: #d4a800;
+  --color-navy: #0a1628;
+  --color-navy-light: #111d33;
+  --color-slate-warm: #2a3441;
+  --color-cream: #faf8f5;
+  --color-cream-dark: #f0ece6;
+  --color-gold-line: rgba(255, 204, 0, 0.2);
+  --font-heading: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --font-body: "Source Sans 3", system-ui, -apple-system, sans-serif;
+}
+
+/* Base */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-cream);
+  color: #1a1a2e;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* EU Star Ring Animation */
+@keyframes star-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes star-pulse {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-star-rotate {
+  animation: star-rotate 120s linear infinite;
+}
+
+.animate-star-pulse {
+  animation: star-pulse 3s ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out both;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out both;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.6s ease-out both;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Staggered delays */
+.delay-100 {
+  animation-delay: 100ms;
+}
+.delay-200 {
+  animation-delay: 200ms;
+}
+.delay-300 {
+  animation-delay: 300ms;
+}
+.delay-400 {
+  animation-delay: 400ms;
+}
+.delay-500 {
+  animation-delay: 500ms;
+}
+.delay-600 {
+  animation-delay: 600ms;
+}
+.delay-700 {
+  animation-delay: 700ms;
+}
+.delay-800 {
+  animation-delay: 800ms;
+}
+
+/* Gold line accent */
+.gold-line {
+  position: relative;
+}
+.gold-line::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: var(--color-eu-gold);
+}
+
+/* EU Star */
+.eu-star {
+  width: 12px;
+  height: 12px;
+  background: var(--color-eu-gold);
+  clip-path: polygon(
+    50% 0%,
+    61% 35%,
+    98% 35%,
+    68% 57%,
+    79% 91%,
+    50% 70%,
+    21% 91%,
+    32% 57%,
+    2% 35%,
+    39% 35%
+  );
+}
+
+/* Noise texture overlay */
+.noise-overlay {
+  position: relative;
+}
+.noise-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Section transition observer -- only hide after JS has loaded */
+.js-ready .reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s ease-out,
+    transform 0.7s ease-out;
+}
+.js-ready .reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Smooth accordion */
+.accordion-content {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s ease-out;
+}
+.accordion-content.open {
+  grid-template-rows: 1fr;
+}
+.accordion-inner {
+  overflow: hidden;
+}
+
+/* Snap sections */
+.snap-section {
+  min-height: 100dvh;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Hero already handles its own height */
+.snap-section-hero {
+  scroll-snap-align: start;
+}
+
+/* Footer doesn't need full height */
+.snap-section-footer {
+  scroll-snap-align: start;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-navy);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* Firefox scrollbar */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) var(--color-navy);
+}
