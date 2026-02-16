@@ -4,8 +4,11 @@ import { useEffect, useRef, useState } from "react";
 
 export default function CTA() {
   const sectionRef = useRef<HTMLElement>(null);
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -24,9 +27,33 @@ export default function CTA() {
     return () => observer.disconnect();
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) setSubmitted(true);
+    if (!email) return;
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const res = await fetch("/api/waitlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.error ?? "Something went wrong.");
+      }
+
+      setSubmitted(true);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Something went wrong.",
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -78,22 +105,38 @@ export default function CTA() {
 
         {!submitted ? (
           <form onSubmit={handleSubmit} className="reveal">
-            <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+            <div className="flex flex-col gap-3 max-w-md mx-auto">
               <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="your@email.com"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Your name"
                 required
-                className="flex-1 px-5 py-4 bg-white/10 border border-white/15 rounded-xl text-white placeholder:text-white/30 focus:outline-none focus:border-eu-gold/50 focus:ring-1 focus:ring-eu-gold/20 transition-all"
+                disabled={loading}
+                className="w-full px-5 py-4 bg-white/10 border border-white/15 rounded-xl text-white placeholder:text-white/30 focus:outline-none focus:border-eu-gold/50 focus:ring-1 focus:ring-eu-gold/20 transition-all disabled:opacity-50"
               />
-              <button
-                type="submit"
-                className="px-8 py-4 bg-eu-gold text-navy font-semibold rounded-xl hover:bg-eu-gold-dark transition-all duration-300 shadow-lg shadow-eu-gold/20 hover:shadow-xl hover:shadow-eu-gold/30 hover:-translate-y-0.5 whitespace-nowrap"
-              >
-                Join Waitlist
-              </button>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="your@email.com"
+                  required
+                  disabled={loading}
+                  className="flex-1 px-5 py-4 bg-white/10 border border-white/15 rounded-xl text-white placeholder:text-white/30 focus:outline-none focus:border-eu-gold/50 focus:ring-1 focus:ring-eu-gold/20 transition-all disabled:opacity-50"
+                />
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="px-8 py-4 bg-eu-gold text-navy font-semibold rounded-xl hover:bg-eu-gold-dark transition-all duration-300 shadow-lg shadow-eu-gold/20 hover:shadow-xl hover:shadow-eu-gold/30 hover:-translate-y-0.5 whitespace-nowrap disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+                >
+                  {loading ? "Joining..." : "Join Waitlist"}
+                </button>
+              </div>
             </div>
+            {error && (
+              <p className="text-sm text-red-400 mt-3">{error}</p>
+            )}
             <p className="text-xs text-white/25 mt-4">
               No spam. Unsubscribe anytime. We respect your privacy.
             </p>
