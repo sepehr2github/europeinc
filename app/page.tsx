@@ -6,6 +6,7 @@ import HowItWorks from "@/components/HowItWorks";
 import Timeline from "@/components/Timeline";
 import WhyEurope from "@/components/WhyEurope";
 import FAQ from "@/components/FAQ";
+import Blog from "@/components/Blog";
 import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
 
@@ -34,6 +35,9 @@ export default function Home() {
         </div>
         <div className="snap-section">
           <FAQ />
+        </div>
+        <div className="snap-section">
+          <Blog />
         </div>
         <div className="snap-section-footer bg-navy">
           <CTA />
