@@ -37,7 +37,7 @@ export default function CTA() {
     >
       {/* Background star ring */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="relative w-125 h-125 animate-star-rotate opacity-[0.04]">
+        <div className="relative w-125 h-125 animate-star-rotate opacity-[0.12]">
           <svg viewBox="0 0 100 100" className="w-full h-full">
             {[
               "50,6.2 50.7,7.4 51.8,7.4 50.9,8.3 51.2,9.8 50,9 48.8,9.8 49.1,8.3 48.2,7.4 49.3,7.4",
