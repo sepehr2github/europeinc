@@ -35,20 +35,11 @@ export default function Hero() {
     >
       {/* Background star ring */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="relative w-150 h-150 md:w-200 md:h-200 animate-star-rotate opacity-[0.07]">
+        <div className="relative w-150 h-150 md:w-200 md:h-200 animate-star-rotate opacity-[0.12]">
           <svg viewBox="0 0 100 100" className="w-full h-full">
             {starPoints.map((pts, i) => (
               <polygon key={i} points={pts} fill="#FFCC00" />
             ))}
-            <circle
-              cx="50"
-              cy="50"
-              r="42"
-              fill="none"
-              stroke="#FFCC00"
-              strokeWidth="0.15"
-              strokeDasharray="2 2"
-            />
           </svg>
         </div>
       </div>
