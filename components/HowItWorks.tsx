@@ -75,22 +75,33 @@ export default function HowItWorks() {
           </p>
         </div>
 
-        {/* Steps */}
-        <div className="grid md:grid-cols-4 gap-8 md:gap-4">
+        {/* Steps — badges row (desktop) */}
+        <div className="hidden md:flex items-center justify-between mb-10 px-[calc(12.5%-32px)]">
           {steps.map((step, i) => (
+            <div key={step.num} className="reveal contents">
+              {/* Number badge */}
+              <div className="shrink-0 flex items-center justify-center w-16 h-16 rounded-2xl bg-eu-gold/10 border border-eu-gold/20">
+                <span className="font-heading font-semibold text-2xl text-eu-gold">
+                  {step.num}
+                </span>
+              </div>
+              {/* Connector line */}
+              {i < steps.length - 1 && (
+                <div className="flex-1 h-px mx-2 bg-linear-to-r from-eu-gold/30 to-eu-gold/10" />
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Steps — text row */}
+        <div className="grid md:grid-cols-4 gap-10 md:gap-6">
+          {steps.map((step) => (
             <div
               key={step.num}
-              className="reveal relative text-center md:text-left"
+              className="reveal flex flex-col items-center text-center"
             >
-              {/* Connecting line (desktop) */}
-              {i < steps.length - 1 && (
-                <div className="hidden md:block absolute top-8 left-[calc(50%+32px)] right-0 h-px">
-                  <div className="w-full h-full bg-linear-to-r from-eu-gold/30 to-eu-gold/5" />
-                </div>
-              )}
-
-              {/* Number */}
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-eu-gold/10 border border-eu-gold/20 mb-6">
+              {/* Number badge (mobile only) */}
+              <div className="md:hidden flex items-center justify-center w-16 h-16 rounded-2xl bg-eu-gold/10 border border-eu-gold/20 mb-5">
                 <span className="font-heading font-semibold text-2xl text-eu-gold">
                   {step.num}
                 </span>
